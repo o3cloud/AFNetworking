@@ -317,6 +317,12 @@ forHTTPHeaderField:(NSString *)field
     });
 }
 
+- (void)removeValueForHTTPHeaderField:(NSString *)field {
+    dispatch_barrier_async(self.requestHeaderModificationQueue, ^{
+        [self.mutableHTTPRequestHeaders removeObjectForKey:field];
+    });
+}
+
 - (NSString *)valueForHTTPHeaderField:(NSString *)field {
     NSString __block *value;
     dispatch_sync(self.requestHeaderModificationQueue, ^{
